@@ -1,26 +1,239 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-deep: #0a0e0f;
+  --bg-night: #0e1416;
+  --bg-elev: #131b1d;
+  --bg-card: #182124;
+
+  --teal: #2dd4c5;
+  --teal-bright: #4fe8d8;
+  --teal-deep: #0fa89a;
+
+  --ink: #f5f7f7;
+  --ink-mute: #a8b3b5;
+  --ink-soft: #6c7679;
+
+  --line: #ffffff14;
+  --line-soft: #ffffff0a;
+
+  /* Fuentes */
+  --font-display: "Fraunces", "Times New Roman", serif;
+  --font-sans: "Manrope", -apple-system, sans-serif;
+
+  /* Transiciones */
+  --smooth: cubic-bezier(0.16, 0.84, 0.3, 1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg-deep: var(--bg-deep);
+  --color-bg-night: var(--bg-night);
+  --color-bg-elev: var(--bg-elev);
+  --color-bg-card: var(--bg-card);
+  --color-teal: var(--teal);
+  --color-teal-bright: var(--teal-bright);
+  --color-teal-deep: var(--teal-deep);
+  --color-ink: var(--ink);
+  --color-ink-mute: var(--ink-mute);
+  --color-ink-soft: var(--ink-soft);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+
+  /* Animaciones  */
+  /* --animate-cursor-flicker: cursor-flicker 1s steps(1) infinite; */
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+
+  --ease-smooth: var(--smooth);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply font-sans bg-bg-deep text-ink leading-[1.55];
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    @apply bg-teal text-bg-deep;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-bg-deep;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1f2a2c;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-teal-deep;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* Grain overlay sutil */
+  .grain-overlay::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.35;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  .shell {
+    @apply max-w-330 mx-auto;
+  }
+
+  .pad-x {
+    padding-left: clamp(1.25rem, 4vw, 3rem);
+    padding-right: clamp(1.25rem, 4vw, 3rem);
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-[0.72rem] font-semibold tracking-[0.25em] uppercase text-teal mb-6;
+  }
+  .eyebrow::before {
+    content: "";
+    @apply w-7 h-px bg-teal;
+  }
+
+  .section-title {
+    @apply font-display font-light leading-[1.05] tracking-[-0.03em] mb-5;
+    font-size: clamp(2rem, 4.5vw, 3.75rem);
+    max-width: 18ch;
+  }
+  .section-title em {
+    @apply not-italic font-normal text-teal;
+    font-style: italic;
+  }
+
+  .section-lead {
+    @apply text-[1.05rem] text-ink-mute leading-[1.65];
+    max-width: 55ch;
+  }
+
+  /* Botones */
+  .btn {
+    @apply inline-flex items-center gap-[0.65rem] py-[1.05rem] px-7 text-[0.9rem] font-semibold tracking-[0.04em] rounded-full transition-all duration-[400ms] ease-smooth relative overflow-hidden;
+  }
+  .btn-primary {
+    @apply bg-teal text-bg-deep;
+    box-shadow: 0 10px 40px -10px rgba(45, 212, 197, 0.25);
+  }
+  .btn-primary:hover {
+    @apply bg-teal-bright -translate-y-0.5;
+    box-shadow: 0 20px 50px -10px rgba(45, 212, 197, 0.25);
+  }
+  .btn-primary svg {
+    @apply transition-transform duration-[350ms] ease-smooth;
+  }
+  .btn-primary:hover svg {
+    transform: translateX(3px);
+  }
+
+  .btn-ghost {
+    @apply text-ink border border-line backdrop-blur-md;
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .btn-ghost:hover {
+    @apply -translate-y-0.5;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+
+  /* Hero título — palabras animadas */
+  .hero-title {
+    @apply font-display font-light leading-[0.98] tracking-[-0.035em] mb-7;
+    font-size: clamp(2.75rem, 7.5vw, 6.5rem);
+    max-width: 18ch;
+  }
+  .hero-title .word {
+    @apply inline-block opacity-0;
+    animation: rise 1s cubic-bezier(0.16, 0.84, 0.3, 1) both;
+  }
+  .hero-title em {
+    @apply not-italic font-normal text-teal;
+    font-style: italic;
+  }
+
+  /* Reveal on scroll */
+  .reveal {
+    @apply opacity-0;
+    transform: translateY(40px);
+    transition: opacity 0.9s cubic-bezier(0.16, 0.84, 0.3, 1),
+      transform 0.9s cubic-bezier(0.16, 0.84, 0.3, 1);
+  }
+  .reveal.in {
+    @apply opacity-100;
+    transform: none;
+  }
+
+  .reveal-stagger > * {
+    @apply opacity-0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 0.84, 0.3, 1),
+      transform 0.8s cubic-bezier(0.16, 0.84, 0.3, 1);
+  }
+  .reveal-stagger.in > * {
+    @apply opacity-100;
+    transform: none;
+  }
+  .reveal-stagger.in > *:nth-child(1) {
+    transition-delay: 0.05s;
+  }
+  .reveal-stagger.in > *:nth-child(2) {
+    transition-delay: 0.15s;
+  }
+  .reveal-stagger.in > *:nth-child(3) {
+    transition-delay: 0.25s;
+  }
+  .reveal-stagger.in > *:nth-child(4) {
+    transition-delay: 0.35s;
+  }
+  .reveal-stagger.in > *:nth-child(5) {
+    transition-delay: 0.45s;
+  }
+  .reveal-stagger.in > *:nth-child(6) {
+    transition-delay: 0.55s;
+  }
+  .reveal-stagger.in > *:nth-child(7) {
+    transition-delay: 0.65s;
+  }
+
+  /* Quote card en porque */
+  .porque-quote::before {
+    content: '"';
+    @apply absolute -top-2 left-4 text-teal font-display leading-none;
+    font-size: 4rem;
+  }
+
+  /* Scroll hint vertical */
+  .scroll-hint {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+  .scroll-hint::before {
+    content: "";
+    @apply w-px h-10;
+    background: linear-gradient(to bottom, transparent, #2dd4c5, transparent);
+    animation: scrollBeam 2.5s ease-in-out infinite;
+  }
 }
