@@ -41,10 +41,46 @@
 
   /* Animaciones  */
   /* --animate-cursor-flicker: cursor-flicker 1s steps(1) infinite; */
+  --animate-slow-zoom: slow-zoom 20s ease-out forwards;
+  --animate-pulse-dot: pulse-dot 2s ease-in-out infinite;
+
   --font-display: var(--font-display);
   --font-sans: var(--font-sans);
 
   --ease-smooth: var(--smooth);
+}
+
+/* Keyframes globales (usados también desde estilos inline en hero.tsx) */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slow-zoom {
+  from {
+    transform: scale(1.05);
+  }
+  to {
+    transform: scale(1.15);
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
 }
 
 @layer base {
