@@ -1,3 +1,5 @@
+"use client";
+
 import { GalItem } from "@/app/ui/gal-item";
 import { PROYECTOS } from "@/app/data";
 import { useReveal } from "@/app/hooks/useReveal";
